@@ -24,7 +24,7 @@ public struct LatestGlucoseCircularView: View {
             Text(viewModel.currentGlucoseDateText)
                 .strikethrough(viewModel.isGlucoseStale)
                 .font(.footnote)
-            Text(viewModel.currentGlucoseText)
+            Text(viewModel.currentGlucoseAndChangeText)
                 .foregroundStyle(egvColor)
                 .strikethrough(viewModel.isGlucoseStale)
                 .bold()

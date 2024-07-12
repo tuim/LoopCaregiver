@@ -24,14 +24,14 @@ struct ContentView: View {
     var body: some View {
         NavigationStack(path: $path) {
             VStack {
-                if let looper = accountService.selectedLooper {
-                    HomeView(connectivityManager: watchService, looperService: accountService.createLooperService(looper: looper, settings: settings))
+                if let looperService = accountService.selectedLooperService {
+                    HomeView(connectivityManager: watchService, accountService: accountService, looperService: looperService)
                 } else {
                      Text("Open Caregiver Settings on your iPhone and tap 'Setup Watch'")
                 }
             }
             .navigationDestination(for: String.self, destination: { _ in
-                SettingsView(connectivityManager: watchService, accountService: accountService, settings: settings)
+                WatchSettingsView(connectivityManager: watchService, accountService: accountService, settings: settings)
             })
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -59,7 +59,7 @@ struct ContentView: View {
             Task {
                 do {
                     try await deepLinkHandler.handleDeepLinkURL(url)
-                    reloadWidget()
+                    // reloadWidget()
                 } catch {
                     print("Error handling deep link: \(error)")
                     deepLinkErrorText = error.localizedDescription
@@ -68,7 +68,7 @@ struct ContentView: View {
             }
         })
         .onAppear {
-            reloadWidget()
+            // reloadWidget()
             if accountService.selectedLooper == nil {
                 do {
                     try watchService.requestWatchConfiguration()
